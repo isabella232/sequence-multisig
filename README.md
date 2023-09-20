@@ -1,6 +1,6 @@
-# Sequence Wallet Scripts
+# Sequence Multisig Scripts
 
-A repo for testing various scripts with Sequence wallets.
+A repo for various scripts with Sequence multisig wallets.
 
 ## Multi Signature Wallet Usage
 
