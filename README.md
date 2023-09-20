@@ -45,6 +45,10 @@ Each signer should run the following command:
 yarn sequence-multisig send -c config.json -t transaction.json
 ```
 
+The script will output the transaction subdigest which can be used by external EOA interfaces to sign the transaction.
+Please note that the script is expecting signatures from non-contract wallets.
+Contract wallets and abstract accounts are not supported.
+
 The script will automatically sign the transaction with the keys defined in the configuration file.
 
 The script will prompt for missing signatures from other signers.

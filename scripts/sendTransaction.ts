@@ -37,6 +37,9 @@ export const sendTransaction = async (
   ]
   const digest = commons.transaction.digestOfTransactions(nonce, transactions)
   const subdigest = subDigestOf(wallet.address, config.network.chainId, digest)
+
+  console.log(`Transaction subdigest for signing: ${subdigest}`)
+
   const subdigestBytes = ethers.utils.arrayify(subdigest)
 
   // Sign transaction with available signers
@@ -45,8 +48,8 @@ export const sendTransaction = async (
     const address = await signer.getAddress()
     //TODO Check address in wallet config
     const signature = await signer.signMessage(subdigestBytes)
-		console.log('Signature of', address, 'is:', signature)
-		signatureParts.push({ address, signature })
+    console.log('Signature of', address, 'is:', signature)
+    signatureParts.push({ address, signature })
   }
 
   // Request missing signatures
@@ -118,5 +121,5 @@ export const sendTransaction = async (
     signatureParts.forEach(({ address, signature }) => {
       console.log('Signature of', address, 'is:', signature)
     })
-	}
+  }
 }
