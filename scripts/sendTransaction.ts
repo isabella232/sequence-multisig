@@ -77,10 +77,13 @@ export const sendTransaction = async (
     parts.set(address, { signature: suffixed, isDynamic: false })
   })
 
-  if (
-    signatureParts.length <
-    BigNumber.from(config.walletConfig.threshold).toNumber()
-  ) {
+  // Get current threshold from config and signatures
+  const signerPower = config.walletConfig.signers
+    .filter(s => parts.has(s.address))
+    .map(s => BigNumber.from(s.weight))
+    .reduce((a, b) => a.add(b), BigNumber.from(0))
+
+  if (signerPower.lt(config.walletConfig.threshold)) {
     console.log('Threshold not reached.')
     // Output signatures
     signatureParts.forEach(({ address, signature }) => {
