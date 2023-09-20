@@ -2,11 +2,18 @@
 
 A repo for testing various scripts with Sequence wallets.
 
-## Usage
+## Multi Signature Wallet Usage
 
-Download the repo.
+A multisig wallet is a powerful tool as it allows an address to be controlled by multiple entities.
+Sequence supports a range of configurations but currently lacks tooling to support keys owned by multiple parties.
+This script enables multiple key owners to sign and send a transactions using a multisig wallet without the need for sharing keys.
 
-Copy `config/config.sample.ts` to `config/config.ts` and update the configuration.
+### Setup
+
+Each signer must complete the following.
+
+Make a copy of `config.sample.json` and update the configuration.
+The configuration type is defined in `scripts/utils/config.ts`.
 
 Install dependencies:
 
@@ -14,24 +21,36 @@ Install dependencies:
 yarn
 ```
 
-Create the multisig wallet:
+### Deployment
+
+The multisig wallet may be deployed using the following command:
 
 ```bash
-yarn run deployMultisig
+yarn sequence-multisig deploy -c config.json
 ```
 
-Take the output address and add it back into the `config/config.ts` file.
+This uses the configuration supplied in `config.json` to deploy the multisig wallet.
 
-Have each signer create their signature for the transaction:
+### Sending a Transaction
+
+Create the transaction you wish to send in a JSON file.
+The transaction type is defined in `commons.transaction.Transaction` from `@0xsequence/core`.
+An example is located in `transaction.sample.json`.
+
+Share this transaction file with other signers.
+
+Each signer should run the following command:
 
 ```bash
-yarn run signTransaction
+yarn sequence-multisig send -c config.json -t transaction.json
 ```
 
-Take the output signature for each address and add it back into the `config/config.ts` file.
+The script will automatically sign the transaction with the keys defined in the configuration file.
 
-Combine and send the transaction with the combined signatures:
+The script will prompt for missing signatures from other signers.
+If these are not available, simply press enter to skip.
 
-```bash
-yarn run sendTransaction
-```
+If the threshold is not met, the currently known signatures will be output to the console.
+These can be shared with other signers to complete the transaction.
+
+If the signature threshold is met, the script will prompt for the transaction to be sent to the network.

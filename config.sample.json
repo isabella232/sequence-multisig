@@ -1,0 +1,28 @@
+{
+  "signerPrivateKeys": [
+    ""
+  ],
+  "walletConfig": {
+    "threshold": 2,
+    "checkpoint": 0,
+    "signers": [
+      {
+        "address": "0xd496cB6f37381eb5687144d539303a68154b5f30",
+        "weight": 1
+      },
+      {
+        "address": "0x6B659aB3A1E8D8A05092A6961515487174d13c90",
+        "weight": 1
+      },
+      {
+        "address": "0x721B21F376bddFCDa0f7a7be28129FA4F9D94011",
+        "weight": 1
+      }
+    ]
+  },
+  "network": {
+    "chainId": 11155111,
+    "name": "sepolia",
+    "rpcUrl": "https://ethereum-sepolia.blockpi.network/v1/rpc/public"
+  }
+}

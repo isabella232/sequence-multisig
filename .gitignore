@@ -1,5 +1,8 @@
 node_modules
 yarn-error.log
 
-config/*
-!config/config.sample.ts
+config*.json
+!config.sample.json
+
+transaction*.json
+!transaction.sample.json

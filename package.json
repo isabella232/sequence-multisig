@@ -1,21 +1,23 @@
 {
   "name": "sequence-wallet-scripts",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./scripts/main.ts",
   "repository": "https://github.com/ScreamingHawk/sequence-wallet-scripts.git",
   "author": "Michael Standen",
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
     "0xsequence": "^1.2.2",
+    "@commander-js/extra-typings": "^11.0.0",
+    "@inquirer/prompts": "^3.1.1",
+    "commander": "^11.0.0",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
+    "ora": "5.4.1",
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "deployMultisig": "yarn ts-node scripts/deployMultisig.ts",
-    "signTransaction": "yarn ts-node scripts/signTransaction.ts",
-    "sendTransaction": "yarn ts-node scripts/sendTransaction.ts",
+    "sequence-multisig": "yarn ts-node scripts/main.ts",
     "lint:init": "husky install",
     "lint": "eslint . --ext .ts"
   },

@@ -3,7 +3,7 @@ import type { ethers } from 'ethers'
 import { V2_WALLET_CONTEXT } from './constants'
 import { Orchestrator } from '@0xsequence/signhub'
 import { commons, v2 } from '@0xsequence/core'
-import type { Config } from '../../config/config'
+import type { Config } from './config'
 
 export const createMultisig = async (
   signers: ethers.Signer[],
