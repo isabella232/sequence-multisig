@@ -4,6 +4,7 @@ import ErrorText, { StatusTextProps } from './StatusText'
 import * as t from 'io-ts'
 import * as E from 'fp-ts/Either'
 import { PathReporter } from 'io-ts/lib/PathReporter'
+import { Textarea } from './TextArea'
 
 // Parsers
 const BigNumberish = t.union([t.string, t.number])
@@ -46,9 +47,7 @@ const TransactionDetails: React.FC<TransactionDetailsProps> = ({
   return (
     <div className="card">
       <h2>Transaction Details</h2>
-      <p>Set your transaction details here.</p>
-      <textarea
-        style={{width: "100%"}}
+      <Textarea
         placeholder="Transaction Details"
         defaultValue={transaction ? JSON.stringify(transaction, null, 2) : ''}
         onChange={e => updateTransactionDetails(e.target.value)}

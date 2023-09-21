@@ -14,10 +14,12 @@
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
     "ora": "5.4.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "vite": "^4.4.9"
   },
   "scripts": {
     "sequence-multisig": "yarn ts-node scripts/main.ts",
+    "frontend": "cd frontend && yarn && yarn dev",
     "lint:init": "husky install",
     "lint": "eslint . --ext .ts"
   },

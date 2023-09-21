@@ -1,8 +1,9 @@
+# Node
 node_modules
 yarn-error.log
 
+# Config
 config*.json
 !config.sample.json
-
 transaction*.json
 !transaction.sample.json
