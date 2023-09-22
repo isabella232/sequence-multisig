@@ -7,6 +7,7 @@ import TransactionDetails from './components/TransactionDetails'
 import StatusText from './components/StatusText'
 import { ethers } from 'ethers'
 import SignTransaction from './components/SignTransaction'
+import DeployMultisig from './components/DeployMultisig'
 
 const App = () => {
   const [walletConfig, setWalletConfig] =
@@ -33,6 +34,7 @@ const App = () => {
         walletConfig={walletConfig}
         setWalletConfig={setWalletConfig}
       />
+      <DeployMultisig walletConfig={walletConfig} signer={signer} />
       <TransactionDetails
         transaction={transaction}
         setTransaction={setTransaction}

@@ -2,6 +2,7 @@ import { Wallet } from '@0xsequence/wallet'
 import type { ethers } from 'ethers'
 import { Orchestrator } from '@0xsequence/signhub'
 import { commons, v2 } from '@0xsequence/core'
+import { LocalRelayer } from '@0xsequence/relayer'
 
 export type WalletType = Wallet<
   v2.config.WalletConfig,
@@ -47,6 +48,7 @@ export const createMultisig = async (
     address,
     orchestrator: new Orchestrator(signers),
     provider,
+    relayer: new LocalRelayer(signers[0]),
   })
 
   return wallet
