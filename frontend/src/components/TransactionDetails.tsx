@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { commons } from '@0xsequence/core'
-import ErrorText, { StatusTextProps } from './StatusText'
+import ErrorText, { StatusTextProps } from './base/StatusText'
 import * as t from 'io-ts'
 import * as E from 'fp-ts/Either'
 import { PathReporter } from 'io-ts/lib/PathReporter'
-import { Textarea } from './TextArea'
+import { Textarea } from './base/TextArea'
 
 // Parsers
 const BigNumberish = t.union([t.string, t.number])

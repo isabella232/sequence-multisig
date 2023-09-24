@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import sequenceLogo from '/logo512.png'
-import './App.css'
-import WalletConfiguration from './components/WalletConfiguration'
 import { commons } from '@0xsequence/core'
-import TransactionDetails from './components/TransactionDetails'
-import StatusText from './components/StatusText'
 import { ethers } from 'ethers'
-import SignTransaction from './components/SignTransaction'
+import { useEffect, useState } from 'react'
+import './App.css'
 import DeployMultisig from './components/DeployMultisig'
+import SendTransaction from './components/SendTransaction'
+import SignTransaction from './components/SignTransaction'
+import TransactionDetails from './components/TransactionDetails'
+import WalletConfiguration from './components/WalletConfiguration'
+import sequenceLogo from '/logo512.png'
 
 const App = () => {
   const [walletConfig, setWalletConfig] =
@@ -19,7 +19,6 @@ const App = () => {
   useEffect(() => {
     if (!window.ethereum) return
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    console.log(provider)
     provider.send('eth_requestAccounts', [])
     setSigner(provider.getSigner())
   }, [])
@@ -40,6 +39,11 @@ const App = () => {
         setTransaction={setTransaction}
       />
       <SignTransaction
+        signer={signer}
+        transaction={transaction}
+        walletConfig={walletConfig}
+      />
+      <SendTransaction
         signer={signer}
         transaction={transaction}
         walletConfig={walletConfig}

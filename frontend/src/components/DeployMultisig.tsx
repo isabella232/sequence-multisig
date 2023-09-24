@@ -2,7 +2,7 @@ import { commons } from '@0xsequence/core'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { createMultisig } from '../utils/multisig'
-import ErrorText, { StatusTextProps } from './StatusText'
+import ErrorText, { StatusTextProps } from './base/StatusText'
 
 export type DeployMultisigProps = {
   walletConfig: commons.config.SimpleConfig | null
@@ -55,9 +55,10 @@ const DeployMultisig: React.FC<DeployMultisigProps> = ({
       await tx.wait()
 
       setStatus({ isError: false, text: 'Deployed multisig wallet!' })
+      setCanDeploy(false)
     } catch (e) {
       console.error(e)
-      setStatus({ isError: true, text: 'Unable to deploy transaction' })
+      setStatus({ isError: true, text: 'Unable to deploy multisig wallet' })
     }
     setLoading(false)
   }

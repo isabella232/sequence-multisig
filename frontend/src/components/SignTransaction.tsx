@@ -1,9 +1,9 @@
 import { commons } from '@0xsequence/core'
-import { subDigestOf } from '@0xsequence/utils'
 import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { createMultisig } from '../utils/multisig'
-import ErrorText, { StatusTextProps } from './StatusText'
+import ErrorText, { StatusTextProps } from './base/StatusText'
+import { getTransactionSubdigest } from '../utils/transaction'
 
 export type SignTransactionProps = {
   walletConfig: commons.config.SimpleConfig | null
@@ -18,16 +18,21 @@ const SignTransaction: React.FC<SignTransactionProps> = ({
 }) => {
   const [invalidSigner, setInvalidSigner] = useState<boolean>(false)
   const [status, setStatus] = useState<StatusTextProps>()
-  const [signatureInfo, setSignatureInfo] = useState<{address: string, signature: string} | undefined>()
+  const [signatureInfo, setSignatureInfo] = useState<
+    { address: string; signature: string } | undefined
+  >()
 
   useEffect(() => {
     if (!signer || !walletConfig) return
     signer.getAddress().then(address => {
-      if (walletConfig.signers.find(s => s.address === address)){
+      if (walletConfig.signers.find(s => s.address === address)) {
         setStatus(undefined)
         setInvalidSigner(false)
       } else {
-        setStatus({ isError: true, text: 'Connected signer is a not a multisig signer' })
+        setStatus({
+          isError: true,
+          text: 'Connected signer is a not a multisig signer',
+        })
         setInvalidSigner(true)
       }
     })
@@ -40,37 +45,35 @@ const SignTransaction: React.FC<SignTransactionProps> = ({
     setSignatureInfo(undefined)
     try {
       const address = await signer.getAddress()
-      if (!walletConfig.signers.find(s => s.address === address)){
-        setStatus({ isError: true, text: 'Connected signer is a not a multisig signer' })
+      if (!walletConfig.signers.find(s => s.address === address)) {
+        setStatus({
+          isError: true,
+          text: 'Connected signer is a not a multisig signer',
+        })
         return
       }
 
       // Create wallet
       const wallet = await createMultisig([signer], walletConfig)
       if (!wallet) throw new Error('Unable to create multisig wallet')
-      const nonce = await wallet.fetchNonceOrSpace()
 
       // Get transaction digest
+      const chainId = (await signer.provider?.getNetwork())?.chainId ?? 1
       const transactions = [
         commons.transaction.toSequenceTransaction(wallet.address, transaction)
           .transaction,
       ]
-      const digest = commons.transaction.digestOfTransactions(
-        nonce,
+      const subdigest = await getTransactionSubdigest(
+        wallet,
         transactions,
-      )
-      const chainId = (await signer.provider?.getNetwork())?.chainId
-      const subdigest = subDigestOf(
-        wallet.address,
-        chainId ?? 1,
-        digest,
+        chainId,
       )
       const subdigestBytes = ethers.utils.arrayify(subdigest)
 
       // Sign it
       const signature = await signer.signMessage(subdigestBytes)
       if (!signature) throw new Error('No signature')
-      setSignatureInfo({address, signature})
+      setSignatureInfo({ address, signature })
     } catch (e) {
       setStatus({ isError: true, text: 'Unable to sign transaction' })
     }
@@ -78,16 +81,18 @@ const SignTransaction: React.FC<SignTransactionProps> = ({
 
   return (
     <div className="card">
-      <button onClick={doSign} disabled={invalidSigner}>Sign Transaction!</button>
-      {signatureInfo &&
-      <>
-        <p>
-          Send this signature to the other signers.
-        </p>
-        <p>Signed by {signatureInfo.address}</p>
-        <code style={{margin: '1em'}}>{signatureInfo.signature}</code>
-      </>
-      }
+      <button onClick={doSign} disabled={invalidSigner}>
+        Sign Transaction!
+      </button>
+      {signatureInfo && (
+        <>
+          <p>Send this signature to the other signers.</p>
+          <p>
+            Signature by <code>{signatureInfo.address}</code> is{' '}
+            <code>{signatureInfo.signature}</code>
+          </p>
+        </>
+      )}
       <ErrorText status={status} />
     </div>
   )

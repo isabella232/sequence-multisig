@@ -38,3 +38,7 @@
   flex-direction: column;
   margin: 2em 0.5em;
 }
+
+*:disabled {
+  cursor: not-allowed;
+}
